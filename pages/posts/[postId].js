@@ -1,3 +1,5 @@
+import { useRouter } from "next/router";
+
 export default function PostDetails({ post }) {
   return (
     <div>
@@ -13,10 +15,15 @@ export async function getStaticProps(context) {
   const { params } = context;
 
   const res = await fetch(
-    "https://jsonplaceholder.typicode.com/posts/" + params.postId
+    "https://jsonplaceholder.typicode.com/posts/" + params?.postId
   );
   const data = await res.json();
-
+  if (!data.id) {
+    return {
+      notFound: true,
+    };
+  }
+  console.log("Generating page for /posts/" + params?.postId);
   return {
     props: {
       post: data,
@@ -25,15 +32,25 @@ export async function getStaticProps(context) {
 }
 
 export async function getStaticPaths() {
-  const res = await fetch("https://jsonplaceholder.typicode.com/posts/");
-  const data = await res.json();
-  const paths = data.map((post) => {
-    return {
-      params: { postId: `${post.id}` },
-    };
-  });
+  //   const res = await fetch("https://jsonplaceholder.typicode.com/posts/");
+  //   const data = await res.json();
+  //   const paths = data.map((post) => {
+  //     return {
+  //       params: { postId: `${post.id}` },
+  //     };
+  //   });
   return {
-    paths,
-    fallback: false,
+    paths: [
+      {
+        params: { postId: "1" },
+      },
+      {
+        params: { postId: "2" },
+      },
+      {
+        params: { postId: "3" },
+      },
+    ],
+    fallback: "blocking",
   };
 }
