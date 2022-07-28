@@ -15,6 +15,10 @@ const Home = () => {
       <Link href="/blog">
         <a>Blog</a>
       </Link>
+      <br />
+      <Link href="/posts">
+        <a>Posts</a>
+      </Link>
       <div onClick={() => goToProductPage()}>
         <h1>Products</h1>
       </div>
